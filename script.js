@@ -1,4 +1,6 @@
 const canvas = document.getElementById("canvas");
+const sprite = document.getElementById("sprite");
+const bricks = document.getElementById("bricks");
 const ctx = canvas.getContext('2d');
 
 canvas.width = 448;
@@ -40,8 +42,17 @@ function drawBall() {
   ctx.closePath();
 }
 function drawPaddle() {
-  ctx.fillStyle = '#0f';
-  ctx.fillRect(paddleX, paddleY, paddleWidth, paddleHeight);
+  ctx.drawImage(
+    sprite,
+    29,
+    174,
+    paddleWidth,
+    paddleHeight,
+    paddleX,
+    paddleY,
+    paddleWidth,
+    paddleHeight,
+  )
 }
 function initEvent() {
   document.addEventListener('keydown', keyDownHandler);
@@ -66,19 +77,33 @@ function initEvent() {
 
 function drawBricks() {}
 function collisionDetection() {
-  if(x + dx > canvas.width - ballRadius || 
-    x + dx < ballRadius
-    ) {
+  
+}
+function ballMovement() {
+  if(x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
     dx = -dx;
   } 
   if( y + dy < ballRadius ) {
     dy = -dy;
   }
+  const isBallSameXAsPaddle  =
+    x > paddleX && 
+    x < paddleX + paddleWidth;
+
+  const isBallSameYAsPaddle  =
+    y + dy > paddleY;
+
+  if(
+    isBallSameXAsPaddle &&
+    isBallSameYAsPaddle
+  ) {
+    dy = -dy;
+  }
+
+  //Balt touches floor.
   if( y + dy > canvas.height - ballRadius) {
     document.location.reload();
   }
-}
-function ballMovement() {
   x += dx;
   y += dy;
 }
@@ -96,11 +121,11 @@ function cleanCanvas() {
 function draw() {
   cleanCanvas();
   drawBall();
-  drawPaddle();
-  drawBricks();
-  collisionDetection();
   ballMovement();
+  drawPaddle();
+  collisionDetection();
   paddleMovement();
+  drawBricks();
   window.requestAnimationFrame(draw);
 }
 
