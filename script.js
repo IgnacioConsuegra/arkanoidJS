@@ -23,6 +23,7 @@ let dy = -2;
 
 const paddleHeight = 10;
 const paddleWidth = 50;
+const paddleVelocity = 7;
 let paddleX = (canvas.width - paddleHeight) / 2;
 let paddleY = canvas.height - paddleHeight - 10;
 
@@ -81,7 +82,14 @@ function ballMovement() {
   x += dx;
   y += dy;
 }
-function paddleMovement() {}
+function paddleMovement() {
+  if(rightPressed && paddleX < canvas.width - paddleWidth) { 
+    paddleX += paddleVelocity;                                                  
+  } 
+  if(leftPressed && paddleX > 0) {
+    paddleX -= paddleVelocity;
+  }
+}
 function cleanCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
