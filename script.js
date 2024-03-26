@@ -121,7 +121,25 @@ function drawBricks() {
   }
 }
 function collisionDetection() {
-  
+  for(let c = 0; c < brickColumnCount; c ++) {
+    for(let r = 0; r < brickRowCount; r++) {
+      const currentBrick = bricks[c][r];
+      if(currentBrick.status === BRICKS_STATUS.DESTROYED) continue;
+      
+      const isBallSameXAsBrick = 
+      x > currentBrick.x && 
+      x < currentBrick.x + brickWidth;
+
+      const isBallSameYAsBrick = 
+      y > currentBrick.y && 
+      y < currentBrick.y + brickWidth;
+
+      if(isBallSameXAsBrick && isBallSameYAsBrick) {
+        dy = -dy;
+        currentBrick.status = BRICKS_STATUS.DESTROYED;
+      }
+    }
+  }
 }
 function ballMovement() {
   if(x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
@@ -164,12 +182,14 @@ function cleanCanvas() {
 }
 function draw() {
   cleanCanvas();
+
   drawBall();
-  ballMovement();
   drawPaddle();
-  collisionDetection();
-  paddleMovement();
   drawBricks();
+
+  collisionDetection();
+  ballMovement();
+  paddleMovement();
   window.requestAnimationFrame(draw);
 }
 
