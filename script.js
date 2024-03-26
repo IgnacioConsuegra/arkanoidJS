@@ -15,8 +15,19 @@ const ballRadius = 3;
 let x = canvas.width / 2;
 let y = canvas.height - 30;
 //Ball velocity.
-let dx = -2;
+let dx = 2;
 let dy = -2; 
+
+
+//Paddle vars.
+
+const paddleHeight = 10;
+const paddleWidth = 50;
+let paddleX = (canvas.width - paddleHeight) / 2;
+let paddleY = canvas.height - paddleHeight - 10;
+
+let rightPressed = false;
+let leftPressed = false;
 
 
 
@@ -27,7 +38,31 @@ function drawBall() {
   ctx.fill();
   ctx.closePath();
 }
-function drawPaddle() {}
+function drawPaddle() {
+  ctx.fillStyle = '#0f';
+  ctx.fillRect(paddleX, paddleY, paddleWidth, paddleHeight);
+}
+function initEvent() {
+  document.addEventListener('keydown', keyDownHandler);
+  document.addEventListener('keyup', keyUpHandler);
+  function keyDownHandler(event) {
+    const {key} = event;
+    if(key === 'Right' || key === 'ArrowRight') {
+      rightPressed = true;
+    } else if (key === 'Left' || key === 'ArrowLeft') { 
+      leftPressed = true;
+    }
+  } 
+  function keyUpHandler(event) { 
+    const {key} = event;
+    if(key === 'Right' || key === 'ArrowRight') {
+      rightPressed = false;
+    } else if (key === 'Left' || key === 'ArrowLeft') { 
+      leftPressed = false;
+    }
+  }
+}
+
 function drawBricks() {}
 function collisionDetection() {
   if(x + dx > canvas.width - ballRadius || 
@@ -39,7 +74,6 @@ function collisionDetection() {
     dy = -dy;
   }
   if( y + dy > canvas.height - ballRadius) {
-    alert("Game over");
     document.location.reload();
   }
 }
@@ -64,3 +98,4 @@ function draw() {
 
 
 draw();
+initEvent();
