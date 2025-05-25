@@ -12,7 +12,7 @@ canvas.style.margin = "0 auto";
 
 //Game variables.
 
-let counter = 0;
+let score = 0;
 
 //Ball variable.
 const ballRadius = 3;
@@ -141,7 +141,7 @@ function collisionDetection() {
       if (isBallSameXAsBrick && isBallSameYAsBrick) {
         dy = -dy;
         currentBrick.status = BRICKS_STATUS.DESTROYED;
-        counter++;
+        updateScore();
       }
     }
   }
@@ -196,6 +196,12 @@ function draw() {
   paddleMovement();
   window.requestAnimationFrame(draw);
 }
+
+function updateScore() {
+  score += 100;
+  document.getElementById("score").innerHTML = `⭐ SCORE:  ${score}`;
+}
+function updateLives() {}
 
 draw();
 initEvent();
