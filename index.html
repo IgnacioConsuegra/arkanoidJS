@@ -4,14 +4,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Arkanoid</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-  <canvas id="canvas"></canvas>
-  <img hidden id="sprite" src="./sprite.png" alt="sprite">
-  <img hidden id="brick" src="./bricks.png" alt="brick">
+  <div class="container">
+    <h1 class="title">ARKANOID</h1>
+    <div class="hud">
+      <span class="score">⭐ SCORE: 0000</span>
+      <span class="lives">❤️ LIVES: 3</span>
+    </div>
+    <div class="game-area">
+      <canvas id="canvas"></canvas>
+      <img hidden id="sprite" src="./images/sprite.png" alt="sprite">
+      <img hidden id="brick" src="./images/bricks.png" alt="brick">
+    </div>
+    <button class="restart">⟳ RESTART</button>
+  </div>
   <script src="script.js"></script>
 </body>
 
