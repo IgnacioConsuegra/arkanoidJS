@@ -135,14 +135,14 @@ function collisionDetection() {
       const currentBrick = bricks[c][r];
       if (currentBrick.status === BRICKS_STATUS.DESTROYED) continue;
 
-      //I want to check if the ball is touching the brick.
-      const isBallSameXAsBrick =
-        x > currentBrick.x && x < currentBrick.x + brickWidth;
-
-      const isBallSameYAsBrick =
-        y > currentBrick.y && y < currentBrick.y + brickHeight;
-
-      if (isBallSameXAsBrick && isBallSameYAsBrick) {
+      //I want to check if the ball is touching the brick, so we need to check if the ball is colliding with the left or right side of the brick.
+      const isCollidingXAxis =
+        x + ballRadius > currentBrick.x &&
+        x - ballRadius < currentBrick.x + brickWidth;
+      const isCollidingYAxis =
+        y + ballRadius > currentBrick.y &&
+        y - ballRadius < currentBrick.y + brickHeight;
+      if (isCollidingXAxis && isCollidingYAxis) {
         currentBrick.status = BRICKS_STATUS.DESTROYED;
         dy = -dy;
         dx = -dx;
