@@ -38,6 +38,9 @@ let leftPressed = false;
 
 const brickRowCount = 6;
 const brickColumnCount = 13;
+const totalBricks = brickRowCount * brickColumnCount;
+const scorePerBrick = 100;
+const maxScore = totalBricks * scorePerBrick;
 const brickWidth = 30;
 const brickHeight = 14;
 const brickPadding = 2;
@@ -146,6 +149,9 @@ function collisionDetection() {
         currentBrick.status = BRICKS_STATUS.DESTROYED;
         dy = -dy;
         dx = -dx;
+        dy += dy / 10;
+        dx += dx / 10;
+        console.log(dy, dx);
         updateScore();
       }
     }
@@ -218,8 +224,12 @@ function draw() {
 }
 
 function updateScore() {
-  score += 100;
+  score += scorePerBrick;
   document.getElementById("score").innerHTML = `⭐ SCORE:  ${score}`;
+  if (score === maxScore) {
+    alert("YOU WON");
+    document.location.reload();
+  }
 }
 function updateLives() {
   lives -= 1;
