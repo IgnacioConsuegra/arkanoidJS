@@ -13,6 +13,7 @@ canvas.style.margin = "0 auto";
 //Game variables.
 
 let score = 0;
+let lives = 3;
 
 //Ball variable.
 const ballRadius = 3;
@@ -127,34 +128,50 @@ function drawBricks() {
   }
 }
 function collisionDetection() {
+  //Resume me how this bellow works, please.
+
   for (let c = 0; c < brickColumnCount; c++) {
     for (let r = 0; r < brickRowCount; r++) {
       const currentBrick = bricks[c][r];
       if (currentBrick.status === BRICKS_STATUS.DESTROYED) continue;
 
+      //I want to check if the ball is touching the brick.
       const isBallSameXAsBrick =
         x > currentBrick.x && x < currentBrick.x + brickWidth;
 
       const isBallSameYAsBrick =
-        y > currentBrick.y && y < currentBrick.y + brickWidth;
+        y > currentBrick.y && y < currentBrick.y + brickHeight;
 
       if (isBallSameXAsBrick && isBallSameYAsBrick) {
-        dy = -dy;
         currentBrick.status = BRICKS_STATUS.DESTROYED;
+        dy = -dy;
+        dx = -dx;
         updateScore();
       }
     }
   }
 }
 function ballMovement() {
+  //Ball touches right or left wall.
   if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
     dx = -dx;
   }
+
+  //Ball touches top wall.
   if (y + dy < ballRadius) {
     dy = -dy;
   }
+
+  //Ball touches paddle.
+  //I want to check if the ball is touching the paddle.
+
   const isBallSameXAsPaddle = x > paddleX && x < paddleX + paddleWidth;
-  const isBallSameYAsPaddle = y + dy > paddleY;
+
+  //Here we must use the paddle height to check if the ball is touching the paddle.
+  //I want to check if the ball is touching the paddle.
+
+  const isBallSameYAsPaddle =
+    y + ballRadius > paddleY && y + ballRadius < paddleY + paddleHeight;
 
   if (isBallSameXAsPaddle && isBallSameYAsPaddle) {
     dy = -dy;
@@ -163,12 +180,15 @@ function ballMovement() {
   //Ball touches floor.
 
   if (y + dy > canvas.height - ballRadius) {
-    // alert("GAME OVER");
-    document.location.reload();
-    console.log("HI");
-    y = 0;
-    //This console log is executed a few hundred times.
-    return;
+    updateLives();
+    //Reset ball position.
+    x = canvas.width / 2;
+    y = canvas.height - 30;
+    dx = 2;
+    dy = -2;
+    //Reset paddle position.
+    paddleX = (canvas.width - paddleWidth) / 2;
+    paddleY = canvas.height - paddleHeight - 10;
   }
   x += dx;
   y += dy;
@@ -201,7 +221,14 @@ function updateScore() {
   score += 100;
   document.getElementById("score").innerHTML = `⭐ SCORE:  ${score}`;
 }
-function updateLives() {}
+function updateLives() {
+  lives -= 1;
+  document.getElementById("lives").innerHTML = `❤️ LIVES: ${lives}`;
+  if (lives === 0) {
+    alert("GAME OVER");
+    document.location.reload();
+  }
+}
 
 draw();
 initEvent();
